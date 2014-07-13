@@ -25,7 +25,7 @@ var Calculator = {
   clear: function() {
     Calculator.numbers_actions = [];
     Calculator.numbers_pressed = [];
-    $('#display').val('0');
+    Calculator.display = 0;
   },
 
   equal: function(){
