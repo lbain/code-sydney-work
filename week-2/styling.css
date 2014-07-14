@@ -1,0 +1,30 @@
+#content {
+  margin-top: 25px;
+}
+
+.tabs {
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding-left: 50px;
+}
+
+#tab-content {
+  margin: 20px 50px;
+}
+
+.tabs li {
+  width: 100px;
+  display: inline-block;
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  margin-bottom: -1px;
+}
+
+li.active {
+  background-color: #eee;
+}
+
+body {
+  margin: 0px;
+}
