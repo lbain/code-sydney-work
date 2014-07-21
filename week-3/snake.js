@@ -16,7 +16,17 @@ function moveSnake() {
     var delta = changePostion(direction);
     for(var j = 0; j < snake[i].length; j++){
       snake[i][j] += delta[j];
-
     }
   }
 }
+
+function changePosition(direction) {
+  var deltas = {'r' : [1,0],
+                'l' : [-1,0],
+                'u' : [0,1],
+                'd' : [0,-1]};
+  return deltas[direction];
+};
+
+
+
