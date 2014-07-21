@@ -34,15 +34,21 @@ function displayBoard() {
   for (var i = 0; i < board.length; i++) {
     $pageBoard.append('<tr>')
     for(var j = 0; j < board[i].length; j++) {
-      $pageBoard.append('<td class="square">[' + i + ', ' + j + ']</td>');
+      $pageBoard.append('<td class="square" id="'+ j + '-' + i + '">[' + j + ', ' + i + ']</td>');
     }
     $pageBoard.append('</tr>')
   }
+}
+function displaySnake() {
+    for (var i = 0; i < snake.length; i++) {
+      $('#' + snake[i][0] + '-' + snake[i][1]).text('O');
+    }
 }
 
 function init() {
   createBoard();
   displayBoard();
+  displaySnake();
 }
 
 $(function() {
