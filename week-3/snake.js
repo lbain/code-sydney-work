@@ -15,7 +15,7 @@ var direction = 'r';
 
 function moveSnake() {
   for (var i = 0; i < snake.length; i++) {
-    var delta = changePostion(direction);
+    var delta = changePosition(direction);
     for(var j = 0; j < snake[i].length; j++){
       snake[i][j] += delta[j];
     }
@@ -30,7 +30,8 @@ function changePosition(direction) {
   return deltas[direction];
 };
 
-function displayBoard() {
+function displayBlankBoard() {
+  $pageBoard.empty();
   for (var i = 0; i < board.length; i++) {
     $pageBoard.append('<tr>')
     for(var j = 0; j < board[i].length; j++) {
@@ -45,10 +46,20 @@ function displaySnake() {
     }
 }
 
+function displayBoard() {
+  displayBlankBoard();
+  displaySnake();
+}
+
+function moveAndDisplay(){
+  moveSnake();
+  displayBoard();
+}
+
 function init() {
   createBoard();
   displayBoard();
-  displaySnake();
+  setInterval(moveAndDisplay, 500);
 }
 
 $(function() {
