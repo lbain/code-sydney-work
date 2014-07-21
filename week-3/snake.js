@@ -1,6 +1,7 @@
 var board = [];
 var $pageBoard = $('#board tbody');
 var size = 20;
+var timer = 0;
 
 function createBoard() {
   board = new Array(size);
@@ -40,10 +41,34 @@ function displayBlankBoard() {
     $pageBoard.append('</tr>')
   }
 }
+
+function hitEdge() {
+  var head = snake[0];
+  return (head[0] > size || // hit right
+          head[0] < 0    || // hit left
+          head[1] > size || // hit bottom
+          head[1] < 0)      // hit top
+}
+
+function hitSnake() {
+  return false;
+}
+
+function endGame() {
+  if (hitSnake() || hitEdge()) {
+    clearInterval(timer);
+    displayFinal();
+  }
+}
+
+function displayFinal() {
+  console.log('You lose :(')
+}
+
 function displaySnake() {
-    for (var i = 0; i < snake.length; i++) {
-      $('#' + snake[i][0] + '-' + snake[i][1]).text('O');
-    }
+  for (var i = 0; i < snake.length; i++) {
+    $('#' + snake[i][0] + '-' + snake[i][1]).text('O');
+  }
 }
 
 function bindKeys() {
@@ -53,7 +78,7 @@ function bindKeys() {
                       39 : 'r',
                       40 : 'd'};
     direction = arrowKeys[e.keyCode]
-  })
+  });
 }
 
 function displayBoard() {
@@ -64,13 +89,14 @@ function displayBoard() {
 function moveAndDisplay(){
   moveSnake();
   displayBoard();
+  endGame();
 }
 
 function init() {
   createBoard();
   displayBoard();
   bindKeys();
-  setInterval(moveAndDisplay, 500);
+  timer = setInterval(moveAndDisplay, 500);
 }
 
 $(function() {
