@@ -2,6 +2,7 @@ var board = [];
 var $pageBoard = $('#board tbody');
 var size = 20;
 var timer = 0;
+var food = [];
 
 function createBoard() {
   board = new Array(size);
@@ -67,7 +68,7 @@ function displayFinal() {
 
 function displaySnake() {
   for (var i = 0; i < snake.length; i++) {
-    $('#' + snake[i][0] + '-' + snake[i][1]).text('O');
+    cellText(snake[i], 'O');
   }
 }
 
@@ -80,10 +81,30 @@ function bindKeys() {
     direction = arrowKeys[e.keyCode]
   });
 }
+function randomNumber(lessThan){
+  return Math.floor(Math.random()*lessThan)
+}
+
+function generateFood() {
+  food = [randomNumber(size),randomNumber(size)]; 
+}
+
+function cellText(positionArray, text){
+  $('#' + positionArray[0] + '-' + positionArray[1]).text(text);
+}
+
+function displayFood(){
+  cellText(food, 'F');
+}
+
+function eatenFood() {
+
+}
 
 function displayBoard() {
   displayBlankBoard();
   displaySnake();
+  displayFood();
 }
 
 function moveAndDisplay(){
@@ -94,6 +115,7 @@ function moveAndDisplay(){
 
 function init() {
   createBoard();
+  generateFood();
   displayBoard();
   bindKeys();
   timer = setInterval(moveAndDisplay, 500);
