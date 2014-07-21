@@ -25,8 +25,8 @@ function moveSnake() {
 function changePosition(direction) {
   var deltas = {'r' : [1,0],
                 'l' : [-1,0],
-                'u' : [0,1],
-                'd' : [0,-1]};
+                'u' : [0,-1],
+                'd' : [0,1]};
   return deltas[direction];
 };
 
@@ -46,6 +46,16 @@ function displaySnake() {
     }
 }
 
+function bindKeys() {
+  $('body').keydown(function(e){
+    var arrowKeys = { 37 : 'l',
+                      38 : 'u',
+                      39 : 'r',
+                      40 : 'd'};
+    direction = arrowKeys[e.keyCode]
+  })
+}
+
 function displayBoard() {
   displayBlankBoard();
   displaySnake();
@@ -59,6 +69,7 @@ function moveAndDisplay(){
 function init() {
   createBoard();
   displayBoard();
+  bindKeys();
   setInterval(moveAndDisplay, 500);
 }
 
