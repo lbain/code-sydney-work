@@ -1,13 +1,15 @@
 var board = [];
+var $pageBoard = $('#board tbody');
+var size = 20;
 
 function createBoard() {
-  var board = new Array(40);
-  for (var i = 0; i < 40; i++) {
-    board[i] = new Array(40);
+  board = new Array(size);
+  for (var i = 0; i < size; i++) {
+    board[i] = new Array(size);
   }
 }
 
-var snake = [[20,20]];
+var snake = [[10,10]];
 
 var direction = 'r';
 
@@ -28,5 +30,21 @@ function changePosition(direction) {
   return deltas[direction];
 };
 
+function displayBoard() {
+  for (var i = 0; i < board.length; i++) {
+    $pageBoard.append('<tr>')
+    for(var j = 0; j < board[i].length; j++) {
+      $pageBoard.append('<td class="square">[' + i + ', ' + j + ']</td>');
+    }
+    $pageBoard.append('</tr>')
+  }
+}
 
+function init() {
+  createBoard();
+  displayBoard();
+}
 
+$(function() {
+  init();
+})
