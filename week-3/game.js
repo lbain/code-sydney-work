@@ -2,7 +2,7 @@ var board = [];
 var $pageBoard = $('#board tbody');
 var size = 18;
 var timer = 0;
-var food = [];
+var food;
 var snake;
 var direction = 'r';
 
@@ -65,22 +65,14 @@ function displayFinal() {
   $pageBoard.empty()
 }
 
-function generateFood() {
-  food = [Utils.randomNumber(size), Utils.randomNumber(size)];
-}
-
-function displayFood(){
-  Utils.cell(food).text('F');
-}
-
 function delta() {
   return changePosition(direction);
 }
 
 function hitFood() {
-  if(snake.hitCell(food)) {
+  if(snake.hitCell(food.getLocation())) {
     snake.lengthen(delta());
-    generateFood();
+    food.generate(size);
     return true;
   }
   return false;
@@ -88,7 +80,7 @@ function hitFood() {
 
 function displayBoard() {
   snake.display();
-  displayFood();
+  food.display();
 }
 
 function moveAndDisplay(){
@@ -116,7 +108,8 @@ function bindKeys() {
 function init() {
   createBoard();
   snake = new Snake(size);
-  generateFood();
+  food = new Food();
+  food.generate(size)
   displayBlankBoard();
   displayBoard();
   bindKeys();
