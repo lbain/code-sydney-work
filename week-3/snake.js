@@ -1,7 +1,7 @@
 function Snake(size) {
   var locations;
 
-  this.init = function(){
+  this.init = function(size){
     locations = [[size/2, size/2]];
     return(this);
   };
@@ -58,6 +58,6 @@ function Snake(size) {
     return locations > 1;
   }
 
-  return this.init();
+  return this.init(size);
 
 };

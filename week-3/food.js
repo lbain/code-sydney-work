@@ -1,7 +1,8 @@
-function Food() {
+function Food(size) {
   var location;
 
-  this.init = function(){
+  this.init = function(size){
+    this.generate(size)
     return(this);
   };
 
@@ -17,6 +18,6 @@ function Food() {
     return location;
   }
 
-  this.init();
+  this.init(size);
 
 };

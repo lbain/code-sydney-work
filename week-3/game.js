@@ -112,6 +112,7 @@ function init() {
   food.generate(size)
   displayBlankBoard();
   displayBoard();
+  food = new Food(size);
   bindKeys();
   timer = setInterval(moveAndDisplay, 500);
 }
