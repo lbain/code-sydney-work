@@ -1,17 +1,9 @@
-var board = [];
-var $pageBoard = $('#board tbody');
+var board;
 var size = 18;
 var timer = 0;
 var food;
 var snake;
 var direction = 'r';
-
-function createBoard() {
-  board = new Array(size);
-  for (var i = 0; i < size; i++) {
-    board[i] = new Array(size);
-  }
-}
 
 function changePosition(direction) {
   var deltas = {'r' : [1,0],
@@ -31,16 +23,6 @@ function oppositeDirection(newDirection) {
   return opposites[direction] === newDirection
 }
 
-function displayBlankBoard() {
-  $pageBoard.empty();
-  for (var i = 0; i < board.length; i++) {
-    $pageBoard.append('<tr>')
-    for(var j = 0; j < board[i].length; j++) {
-      $pageBoard.append('<td class="square" id="'+ j + '-' + i + '"></td>');
-    }
-    $pageBoard.append('</tr>')
-  }
-}
 
 function hitEdge() {
   return (snake.head()[0] > size || // hit right
@@ -62,7 +44,7 @@ function endGame() {
 
 function displayFinal() {
   console.log('You lose :(');
-  $pageBoard.empty()
+  board.clear();
 }
 
 function delta() {
@@ -78,7 +60,7 @@ function hitFood() {
   return false;
 }
 
-function displayBoard() {
+function display() {
   snake.display();
   food.display();
 }
@@ -87,7 +69,7 @@ function moveAndDisplay(){
   snake.move(delta());
   hitFood();
   checkEndGame();
-  displayBoard();
+  display();
 }
 
 function bindKeys() {
@@ -106,13 +88,11 @@ function bindKeys() {
 }
 
 function init() {
-  createBoard();
+  board = new Board('#board tbody', size);
   snake = new Snake(size);
-  food = new Food();
-  food.generate(size)
-  displayBlankBoard();
-  displayBoard();
   food = new Food(size);
+  board.display();
+  display();
   bindKeys();
   timer = setInterval(moveAndDisplay, 500);
 }
