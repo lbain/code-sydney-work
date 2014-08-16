@@ -1,9 +1,10 @@
 Game = {
   cells: null,
   turn: 'X',
-  size: 5,
+  size: null,
 
-  init: function() {
+  init: function(size) {
+    Game.size = size;
     Game.cells = [];
     for (var i = 0; i < Game.size; i++) {
       Game.cells[i] = new Array(Game.size);
@@ -16,40 +17,63 @@ Game = {
     Game.makePlay();
   },
 
-  display: function() {
+  displayBoard: function() {
     $('.cell').text('');
-    for(var i = 0; i < Game.cells.length; i++) {
-      for(var j = 0; j < Game.cells[i].length; j++) {
+    for(var i = 0; i < Game.size; i++) {
+      for(var j = 0; j < Game.size; j++) {
+        $('#cell-'+i+'-'+j).removeClass('x');
+        $('#cell-'+i+'-'+j).removeClass('o');
+        $('#cell-'+i+'-'+j).addClass(Game.cells[i][j]);
         $('#cell-'+i+'-'+j).text(Game.cells[i][j]);
       }
     }
   },
 
   generateBoard: function(){
-    for(var i = 0; i < Game.cells.length; i++){
-      $('#board').append('<div class="row"></div>')
-      for(var j = 0; j < Game.cells[i].length; j++){
-        $('#board .row:last-child').append("<div class='cell' id='cell-" + i + "-" + j + "' col='" + i + "' row='" + j + "'></div>")
+    for(var i = 0; i < Game.size; i++){
+      $('.board').append('<div class="row"></div>')
+      for(var j = 0; j < Game.size; j++){
+        $('.board .row:last-child').append("<div class='cell' id='cell-" + i + "-" + j + "' col='" + i + "' row='" + j + "'></div>")
       }
     }
+  },
+
+  makePlay: function() {
+    Game.displayBoard();
+    if (Game.isWon() || Game.isDraw()){
+      Game.displayOutcome();
+    }
+    Game.turn = (Game.turn === 'X') ? 'O' : 'X';
   },
 
   isWon: function(){
     return (Game.columnWin() || Game.rowWin() || Game.diagonalWin());
   },
 
-  makePlay: function() {
-    Game.display();
-    if (Game.isWon()){
-      console.log('You won!')
+  isDraw: function() {
+    var result = true;
+    for(var i = 0; i < Game.size; i++){
+      for(var j = 0; j < Game.size; j++){
+        result = result && ((Game.cells[i][j] === 'X') || (Game.cells[i][j] === 'O'));
+      }
     }
-    Game.turn = (Game.turn === 'X') ? 'O' : 'X';
+    return result;
+  },
+
+  displayOutcome: function(){
+    if (Game.isWon()){
+      $('#outcome h2').text(Game.turn + ' won the game!')
+    } else if (Game.isDraw()) {
+      $('#outcome h2').text('Draw')
+    }
+    $('.board').addClass('hide')
+    $('#outcome').removeClass('hide')
   },
 
   columnWin: function() {
-    for(var i = 0; i < Game.cells.length; i++) {
+    for(var i = 0; i < Game.size; i++) {
       var result = Game.cells[0][i];
-      for(var j = 1; j < Game.cells.length; j++) {
+      for(var j = 1; j < Game.size; j++) {
         result = result && Game.cells[0][i] === Game.cells[j][i];
       }
       if (result){
@@ -61,9 +85,9 @@ Game = {
   },
 
   rowWin: function() {
-    for(var i = 0; i < Game.cells.length; i++) {
+    for(var i = 0; i < Game.size; i++) {
       var result = Game.cells[i][0];
-      for(var j = 1; j < Game.cells.length; j++) {
+      for(var j = 1; j < Game.size; j++) {
         result = result && Game.cells[i][0] === Game.cells[i][j];
       }
       if (result){
@@ -80,7 +104,7 @@ Game = {
 
   leftDiagonalWin: function() {
     var result = Game.cells[0][0];
-    for(var i = 0; i < Game.cells.length; i++) {
+    for(var i = 0; i < Game.size; i++) {
       result = result && Game.cells[0][0] === Game.cells[i][i];
     }
     if (result){
@@ -91,9 +115,9 @@ Game = {
   },
 
   rightDiagonalWin: function() {
-    var lastElIndex = Game.cells.length-1;
+    var lastElIndex = Game.size-1;
     var result = Game.cells[0][lastElIndex];
-    for(var i = 0; i < Game.cells.length; i++) {
+    for(var i = 0; i < Game.size; i++) {
       result = result && Game.cells[0][lastElIndex] === Game.cells[i][lastElIndex - i];
     }
     if (result){
@@ -105,10 +129,24 @@ Game = {
 }
 
 $(function() {
-  Game.init();
-  $('.cell').on('click', function(event){
-    col = parseInt($(event.target).attr('col'))
-    row = parseInt($(event.target).attr('row'))
-    Game.nextMove(col, row)
+  $('input').keyup(function(event){
+    $('#size-display').text($(event.target).val())
+  });
+  $('input[type=submit]').click(function(event){
+    var size = parseInt($('#size-input').val());
+    if(!size){
+      return
+    }
+    Game.init(size);
+    $('#questions').addClass('hide');
+    $('.board').removeClass('hide');
+  })
+  // More efficent to listen to the whole board than each cell
+  $('.board').on('click', function(event){
+    if($(event.target).hasClass('cell')) {
+      col = parseInt($(event.target).attr('col'))
+      row = parseInt($(event.target).attr('row'))
+      Game.nextMove(col, row)
+    }
   })
 });
