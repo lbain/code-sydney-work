@@ -1,31 +1,39 @@
-body {
+body{
+    background-color: #EEE;
+}
+.display {
     font-family: 'Montserrat', sans-serif;
     width: 550px;
     text-align: center;
-    margin: 0px auto;
+    margin: 20px auto;
+    padding: 40px 20px;
+    background-color: #FFF;
+    border: 1px solid #185694;
+    border-radius: 20px;
 }
 
 h1 {
     font-family: 'Iceland', cursive;
-    margin: 50px auto 20px;
+    margin: 0px auto 20px;
     display: block;
     width: 260px;
     font-size: 4em;
+    color: #FF1E0F;
 }
 
 .board {
     margin: 0 auto;
-    border: 1px solid #000;
+    border: 1px solid #0B1C66;
     display: table;
     font-size: 5em;
 }
 
 .board .X {
-    color: blue;
+    color: #FF1E0F;
 }
 
 .board .O {
-    color: red;
+    color: #1463B2;
 }
 
 .row {
@@ -58,4 +66,9 @@ input[type=submit] {
     font-size: 20px;
     margin: 20px auto;
     display: block;
+    background-color: #185694;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
 }

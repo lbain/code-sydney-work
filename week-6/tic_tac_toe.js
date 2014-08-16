@@ -42,6 +42,7 @@ Game = {
     Game.displayBoard();
     if (Game.isWon() || Game.isDraw()){
       Game.displayOutcome();
+      $('.board').off('click')
     }
     Game.turn = (Game.turn === 'X') ? 'O' : 'X';
   },
@@ -66,7 +67,7 @@ Game = {
     } else if (Game.isDraw()) {
       $('#outcome h2').text('Draw')
     }
-    $('.board').addClass('hide')
+    // $('.board').addClass('hide')
     $('#outcome').removeClass('hide')
   },
 

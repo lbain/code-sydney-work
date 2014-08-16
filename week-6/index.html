@@ -7,22 +7,22 @@
     <link type="text/css" rel="stylesheet" href="style.css"/>
 </head>
 <body>
+<div class='display'>
+    <h1> Tic Tac Toe </h1>
+    <div id="questions">
+        <h2> How big would you like your board? </h2>
+        <input type='text' name='size' id='size-input'>
+        <label for="size-input">cells by <span id="size-display">_</span> cells</label>
+        <input type="submit" value="Start Game!">
+    </div>
 
-<h1> Tic Tac Toe </h1>
-<div id="questions">
-    <h2> How big would you like your board? </h2>
-    <input type='text' name='size' id='size-input'>
-    <label for="size-input">cells by <span id="size-display">_</span> cells</label>
-    <input type="submit" value="Start Game!">
+    <div class="board hide">
+    </div>
+
+    <div id="outcome" class="hide">
+        <h2></h2>
+    </div>
 </div>
-
-<div class="board hide">
-</div>
-
-<div id="outcome" class="hide">
-<h2></h2>
-</div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="tic_tac_toe.js"></script>
 </body>
