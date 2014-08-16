@@ -1,7 +1,31 @@
-#board {
+body {
+    font-family: 'Montserrat', sans-serif;
+    width: 550px;
+    text-align: center;
+    margin: 0px auto;
+}
+
+h1 {
+    font-family: 'Iceland', cursive;
+    margin: 50px auto 20px;
+    display: block;
+    width: 260px;
+    font-size: 4em;
+}
+
+.board {
     margin: 0 auto;
     border: 1px solid #000;
     display: table;
+    font-size: 5em;
+}
+
+.board .X {
+    color: blue;
+}
+
+.board .O {
+    color: red;
 }
 
 .row {
@@ -15,4 +39,23 @@
     height: 100px;
     line-height: 100px;
     text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+#questions {
+    margin-top: 20px;
+}
+
+input[type=text] {
+    font-size: 2em;
+    width: 50px;
+}
+
+input[type=submit] {
+    font-size: 20px;
+    margin: 20px auto;
+    display: block;
 }
