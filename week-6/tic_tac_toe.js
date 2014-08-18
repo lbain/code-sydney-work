@@ -145,6 +145,9 @@ $(function() {
   // More efficent to listen to the whole board than each cell
   $('.board').on('click', function(event){
     if($(event.target).hasClass('cell')) {
+      if($(event.target).text()) {
+        return;
+      }
       col = parseInt($(event.target).attr('col'))
       row = parseInt($(event.target).attr('row'))
       Game.nextMove(col, row)
