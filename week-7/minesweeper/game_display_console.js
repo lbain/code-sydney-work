@@ -1,7 +1,10 @@
 function Display(board) {
   this.board = board;
+  while(!board.isFinished()){
+    this.showBoard();
+    console.log(this.requestMove());
+  }
   this.showBoard();
-  // console.log(this.requestMove());
 }
 
 Display.prototype.showBoard = function() {
@@ -29,5 +32,6 @@ Display.prototype.verticalDivider = function() {
 Display.prototype.requestMove = function() {
   var row = parseInt(prompt("row : "));
   var col = parseInt(prompt("column : "));
+  board.makeMove(row, col);
   return [row, col];
 }

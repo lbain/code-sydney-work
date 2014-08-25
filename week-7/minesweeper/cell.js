@@ -1,15 +1,25 @@
-function Cell() {
+function Cell(row, col) {
   this.bomb = false;
   this.flagged = false;
   this.count = 0;
-  this.found = true;
+  this.found = false;
+  this.row = row;
+  this.col = col;
 }
+
+// Cell.prototype.show = function() {
+//   if(this.found){
+//     return this.displayed() + '-found';
+//   } else {
+//     return this.displayed();
+//   }
+// }
 
 Cell.prototype.show = function() {
   if(this.found){
     return this.displayed();
   } else {
-    return ' '
+    return ' ';
   }
 }
 
@@ -21,6 +31,6 @@ Cell.prototype.displayed = function() {
   } else if(this.count) {
     return this.count;
   } else {
-    return ' ';
+    return '-';
   }
 }
