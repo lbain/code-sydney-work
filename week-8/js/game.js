@@ -21,6 +21,7 @@ function Game() {
 Game.prototype.step = function(timestamp){
   // update models
   game.updateLocations();
+  game.removeFinished();
   game.renderer.draw(game);
   // setTimeout(game.step, 100);
   window.requestAnimationFrame(game.step);
@@ -31,22 +32,27 @@ Game.prototype.movables = function(){
 };
 
 Game.prototype.updateLocations = function() {
-  $.each(this.movables, function(i, movable){
+  $.each(this.movables(), function(i, movable){
     movable.move();
   });
 };
 
-Game.prototype.removeFinished = function(movableList) {
-  var len = this.enemy_missiles.length
-  while (len--) {
-    var i = len - 1;
-    if(this.enemy_missiles[i].done()){
-      this.enemy_missiles.splice(len, 1);
-    }
-  }
-  len = this.explosions
+Game.prototype.removeFinished = function() {
+  this.removeFromList(this.missiles);
+  this.removeFromList(this.enemy_missiles);
+  this.removeFromList(this.explosions);
+};
 
-  len = this.missiles
+Game.prototype.removeFromList = function(movableList) {
+  var len = movableList.length
+  var i = 0;
+  while (len--) {
+    if(movableList[i].done()){
+      movableList.splice(len, 1);
+      i--;
+    }
+    i++;
+  }
 };
 
 Game.prototype.isGameOver = function(){
