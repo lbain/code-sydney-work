@@ -4,7 +4,13 @@ function Explosion(x, y) {
   this.radius = 20;
   this.dr = 0.5;
   this.maxR = 50;
-  $.extend( this, hitable );
+  // TUTOR: is there a better way to do this? I was using extend, but it overwrites
+  for (var attrname in hitable){
+    if(!this[attrname]){
+      this[attrname] = hitable[attrname];
+    }
+  }
+  // $.extend( this, hitable );
 }
 
 Explosion.prototype.move = function() {
@@ -12,6 +18,5 @@ Explosion.prototype.move = function() {
 }
 
 Explosion.prototype.done = function() {
-  debugger
   return this.radius > this.maxR;
 }

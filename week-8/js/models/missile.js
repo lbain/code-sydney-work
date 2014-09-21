@@ -16,19 +16,26 @@ Missile.prototype.move = function() {
 }
 
 Missile.prototype.setDeltasFromBuilding = function(buildings){
-  var building = this.closestBuilding(buildings);
+  var building = this.closestBuilding(this.x, buildings);
   this.deltas(building);
 }
 
-Missile.prototype.closestBuilding = function(buildings) {
+Missile.prototype.closestBuilding = function(x, buildings) {
   var self = this;
   var distances = $.map(buildings, function(building, i){
-    return Math.abs(building.x - self.x);
+    return Math.abs(building.x - x);
   });
   var buildingIndex = distances.indexOf(Math.min.apply(Math, distances))
   var building = buildings[buildingIndex]
   return building;
 };
+
+Missile.prototype.setFromClick = function(click, buildings){
+  var building = this.closestBuilding(click.x, buildings);
+  this.x = building.x;
+  this.y = building.y - building.radius - this.radius - 3;
+  this.deltas(click);
+}
 
 Missile.prototype.deltas = function(desintation){
   var deltaX = desintation.x - this.x

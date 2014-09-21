@@ -8,7 +8,7 @@ function Game() {
   this.missiles = [];
   this.enemy_missiles = [];
   this.enemy_missiles.push(new Missile(100, 200, 0, 2));
-  this.explosions = [new Explosion(300, 300)];
+  this.explosions = [];
   this.cities = [
     new City(100, 515),
     new City(450, 575),
@@ -21,11 +21,14 @@ function Game() {
   this.setNextBomb();
 };
 
+
 Game.prototype.step = function(timestamp){
   game.updateLocations();
+  game.setOutOfRange();
   game.setHit();
   game.removeAllFinished();
   game.renderer.draw(game);
+  game.isGameOver(); // TUTOR: want this to be an if statement
   window.requestAnimationFrame(game.step);
 };
 
@@ -42,13 +45,12 @@ Game.prototype.buildings = function(){
 };
 
 Game.prototype.setNextBomb = function() {
-  // why do all the bombs drop at once?
+  // TUTOR: why do all the bombs drop at once?
   var self = this;
   var randomTime = randomNumber(3000);
   setTimeout(function() {
     if(self.enemyMissilesAvailable > 0) {
       self.dropBomb();
-      self.enemyMissilesAvailable--;
     }
     if(self.enemyMissilesAvailable) {
       self.setNextBomb();
@@ -62,6 +64,14 @@ Game.prototype.dropBomb = function() {
   var missile = new Missile(x, -10, 0, 0)
   missile.setDeltasFromBuilding(this.buildings());
   this.enemy_missiles.push(missile);
+  this.enemyMissilesAvailable--;
+};
+
+Game.prototype.shoot = function(mousePosition) {
+  var missile = new Missile(0, 0, 0, 0);
+  missile.setFromClick(mousePosition, this.buildings());
+  this.missiles.push(missile);
+  this.missilesAvailable--;
 };
 
 Game.prototype.updateLocations = function() {
@@ -69,6 +79,15 @@ Game.prototype.updateLocations = function() {
     movable.move();
   });
 };
+
+Game.prototype.setOutOfRange = function() {
+  var self = this;
+  $.each(this.movables(), function(i, movable){
+    if (movable.x > self.renderer.x || movable.y > self.renderer.y) {
+      movable.alive = false;
+    }
+  });
+}
 
 Game.prototype.removeAllFinished = function() {
   this.explosions = this.removeDone(this.explosions);
@@ -141,12 +160,17 @@ Game.prototype.missilesHitCities = function() {
 };
 
 Game.prototype.isGameOver = function(){
+  if (this.isGameLost()){
+    console.log('LOST');
+  } else if(this.isGameWon()) {
+    console.log('WON');
+  }
   return this.isGameLost() || this.isGameWon();
 };
 
 Game.prototype.isGameLost = function(){
   var dead_cities = 0;
-  $.each(this.cities, function(city, i){
+  $.each(this.cities, function(i, city){
     if(!city.alive) {
       dead_cities++;
     }

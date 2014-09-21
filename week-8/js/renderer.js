@@ -1,6 +1,12 @@
 function Renderer(game) {
+  var self = this;
   this.game = game;
+  this.x = 800;
+  this.y = 600;
   this.canvas = document.getElementById('canvas');
+  this.canvas.addEventListener('mousedown', function(event) {
+    self.shoot(event);
+  }, false);
   this.context = canvas.getContext('2d');
   this.setImages();
 };
@@ -35,6 +41,13 @@ Renderer.prototype.clear = function(){
 
   // Restore the transform
   this.context.restore();
+};
+
+Renderer.prototype.shoot = function(event){
+  var rect = this.canvas.getBoundingClientRect();
+  var mousePosition = { x: event.clientX - rect.left,
+                        y: event.clientY - rect.top }
+  this.game.shoot(mousePosition)
 };
 
 Renderer.prototype.ground = function(){
