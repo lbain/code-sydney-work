@@ -111,48 +111,45 @@ Game.prototype.setHit = function() {
 
 Game.prototype.explosionsHitMissiles = function() {
   var self = this;
-  $.each(self.explosions, function(i, explosion){
-    $.each(self.allMisiles(), function(j, missile) {
-      if (explosion.isHit(missile)){
-        self.explosions.push(new Explosion(missile.x, missile.y));
-        missile.alive = false;
-      }
-    });
+  self.loopHits(self.explosions, self.allMisiles(), function(explosion, missile){
+    self.explosions.push(new Explosion(missile.x, missile.y));
+    missile.alive = false;
   });
 };
 
 Game.prototype.missilesHitMissiles = function() {
   var self = this;
-  $.each(self.allMisiles(), function(i, missile1){
-    $.each(self.allMisiles(), function( j, missile2 ) {
-      if (missile1 !== missile2 && missile1.isHit(missile2)){
-        self.explosions.push(new Explosion(missile1.x, missile1.y));
-        missile1.alive = false;
-        missile2.alive = false;
-      }
-    });
+  self.loopHits(self.allMisiles(), self.allMisiles(), function(missile1, missile2){
+    if (missile1 !== missile2){
+      self.explosions.push(new Explosion(missile1.x, missile1.y));
+      missile1.alive = false;
+      missile2.alive = false;
+    }
   });
 };
 
 Game.prototype.missilesHitBunkers = function() {
   var self = this;
-  $.each(self.bunkers, function(i, bunker){
-    $.each(self.allMisiles(), function(j, missile) {
-      if (bunker.isHit(missile)){
-        bunker.alive = false;
-        missile.alive = false;
-      }
-    });
+  self.loopHits(self.bunkers, self.allMisiles(), function(bunker, missile){
+    bunker.alive = false;
+    missile.alive = false;
   });
 };
 
 Game.prototype.missilesHitCities = function() {
   var self = this;
-  $.each(self.cities, function(i, city){
-    $.each(self.allMisiles(), function(j, missile) {
-      if (city.isHit(missile)){
-        city.alive = false;
-        missile.alive = false;
+  self.loopHits(self.cities, self.allMisiles(), function(city, missile){
+    city.alive = false;
+    missile.alive = false;
+  });
+};
+
+Game.prototype.loopHits = function(list1, list2, callback) {
+  var self = this;
+  $.each(list1, function(i, item1){
+    $.each(list2, function( j, item2 ) {
+      if (item1.isHit(item2)){
+        callback(item1, item2)
       }
     });
   });
