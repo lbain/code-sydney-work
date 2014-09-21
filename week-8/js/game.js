@@ -1,11 +1,13 @@
+function randomNumber(max) {
+  return Math.floor(Math.random() * max);
+}
+
 function Game() {
+  this.missilesAvailable = 10;
+  this.enemyMissilesAvailable = 5;
   this.missiles = [];
   this.enemy_missiles = [];
-  // for(var i = 0; i < 5; i++){
-    this.missiles.push(new Missile(100, 200, 0, 2));
-    // this.missiles.push(new Missile(5, 100, 0, -1));
-    // this.enemy_missiles.push(new Missile(5, 100, 0, -1));
-  // }
+  this.enemy_missiles.push(new Missile(100, 200, 0, 2));
   this.explosions = [new Explosion(300, 300)];
   this.cities = [
     new City(100, 515),
@@ -16,21 +18,50 @@ function Game() {
     new Bunker(275, 525),
     new Bunker(750, 535) ];
   this.renderer = new Renderer(this);
+  this.setNextBomb();
 };
 
-
 Game.prototype.step = function(timestamp){
-  // update models
   game.updateLocations();
-  game.removeFinished();
-  game.removeHit();
+  game.setHit();
+  game.removeAllFinished();
   game.renderer.draw(game);
-  // setTimeout(game.step, 100);
   window.requestAnimationFrame(game.step);
 };
 
 Game.prototype.movables = function(){
-  return this.missiles.concat(this.enemy_missiles).concat(this.explosions);
+  return this.allMisiles().concat(this.explosions);
+};
+
+Game.prototype.allMisiles = function(){
+  return this.missiles.concat(this.enemy_missiles);
+};
+
+Game.prototype.buildings = function(){
+  return this.bunkers.concat(this.cities);
+};
+
+Game.prototype.setNextBomb = function() {
+  // why do all the bombs drop at once?
+  var self = this;
+  var randomTime = randomNumber(3000);
+  setTimeout(function() {
+    if(self.enemyMissilesAvailable > 0) {
+      self.dropBomb();
+      self.enemyMissilesAvailable--;
+    }
+    if(self.enemyMissilesAvailable) {
+      self.setNextBomb();
+    }
+  }, randomNumber);
+};
+
+Game.prototype.dropBomb = function() {
+  var x = randomNumber(800);
+  // var speed = (randomNumber(4) + 1) / 2;
+  var missile = new Missile(x, -10, 0, 0)
+  missile.setDeltasFromBuilding(this.buildings());
+  this.enemy_missiles.push(missile);
 };
 
 Game.prototype.updateLocations = function() {
@@ -39,43 +70,22 @@ Game.prototype.updateLocations = function() {
   });
 };
 
-Game.prototype.removeFinished = function() {
-  // TUTORS: how can I reuse this code? Pass by reference?
-  this.missiles = $.grep(this.missiles, function( missile, i ) {
-    return !missile.done();
-  });
-  this.enemy_missiles = $.grep(this.enemy_missiles, function( enemy_missile, i ) {
-    return !enemy_missile.done();
-  });
-  this.explosions = $.grep(this.explosions, function( explosion, i ) {
-    return !explosion.done();
-  });
-  this.bunkers = $.grep(this.bunkers, function( bunker, i ) {
-    return bunker.alive;
-  });
-  this.cities = $.grep(this.cities, function( city, i ) {
-    return city.alive;
-  });
-  // this.removeFromList(this.missiles);
-  // this.removeFromList(this.enemy_missiles);
-  // this.removeFromList(this.explosions);
+Game.prototype.removeAllFinished = function() {
+  this.explosions = this.removeDone(this.explosions);
+  this.missiles = this.removeDone(this.missiles);
+  this.enemy_missiles = this.removeDone(this.enemy_missiles);
+  this.bunkers = this.removeDone(this.bunkers);
+  this.cities = this.removeDone(this.cities);
 };
 
-// Game.prototype.removeFromList = function(movableList) {
-//   var len = movableList.length
-//   var i = 0;
-//   while (len--) {
-//     if(movableList[i].done()){
-//       movableList.splice(len, 1);
-//       i--;
-//     }
-//     i++;
-//   }
-// };
+Game.prototype.removeDone = function(list) {
+  return $.grep(list, function( item, i ) {
+    return !item.done();
+  });
+};
 
-Game.prototype.removeHit = function() {
+Game.prototype.setHit = function() {
   this.explosionsHitMissiles();
-  this.missilesHitEnemyMissiles();
   this.missilesHitMissiles();
   this.missilesHitBunkers();
   this.missilesHitCities();
@@ -84,48 +94,23 @@ Game.prototype.removeHit = function() {
 Game.prototype.explosionsHitMissiles = function() {
   var self = this;
   $.each(self.explosions, function(i, explosion){
-    self.missiles = $.grep(self.missiles, function( missile, j ) {
+    $.each(self.allMisiles(), function(j, missile) {
       if (explosion.isHit(missile)){
         self.explosions.push(new Explosion(missile.x, missile.y));
-        return false;
-      } else {
-        return true;
+        missile.alive = false;
       }
     });
   });
 };
 
-Game.prototype.missilesHitEnemyMissiles = function() {
-  var self = this;
-  $.each(self.missiles, function(i, missile){
-    self.enemy_missiles = $.grep(self.enemy_missiles, function( enemy_missile, j ) {
-      if (missile.isHit(enemy_missile)){
-        self.explosions.push(new Explosion(missile.x, missile.y));
-        // I'd really like to delete the enemy_missile here
-        // would that cause problems with the grep?
-        // Doesn't need to happen b/c the explosion will take care of it next itteration
-        return false;
-      } else {
-        return true;
-      }
-    });
-  });
-};
-// so much code duplication... can I reuse? reference??
 Game.prototype.missilesHitMissiles = function() {
   var self = this;
-  $.each(self.missiles, function(i, missile){
-    self.missiles = $.grep(self.missiles, function( friendly_missile, j ) {
-      if (i == j){
-        return true;
-      } else if (missile.isHit(friendly_missile)){
-        self.explosions.push(new Explosion(missile.x, missile.y));
-        // I'd really like to delete the friendly_missile here
-        // would that cause problems with the grep?
-        // Doesn't need to happen b/c the explosion will take care of it next itteration
-        return false;
-      } else {
-        return true;
+  $.each(self.allMisiles(), function(i, missile1){
+    $.each(self.allMisiles(), function( j, missile2 ) {
+      if (missile1 !== missile2 && missile1.isHit(missile2)){
+        self.explosions.push(new Explosion(missile1.x, missile1.y));
+        missile1.alive = false;
+        missile2.alive = false;
       }
     });
   });
@@ -134,12 +119,10 @@ Game.prototype.missilesHitMissiles = function() {
 Game.prototype.missilesHitBunkers = function() {
   var self = this;
   $.each(self.bunkers, function(i, bunker){
-    self.missiles = $.grep(self.missiles, function( missile, j ) {
+    $.each(self.allMisiles(), function(j, missile) {
       if (bunker.isHit(missile)){
         bunker.alive = false;
-        return false;
-      } else {
-        return true;
+        missile.alive = false;
       }
     });
   });
@@ -148,12 +131,10 @@ Game.prototype.missilesHitBunkers = function() {
 Game.prototype.missilesHitCities = function() {
   var self = this;
   $.each(self.cities, function(i, city){
-    self.missiles = $.grep(self.missiles, function( missile, j ) {
+    $.each(self.allMisiles(), function(j, missile) {
       if (city.isHit(missile)){
         city.alive = false;
-        return false;
-      } else {
-        return true;
+        missile.alive = false;
       }
     });
   });

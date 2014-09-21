@@ -17,5 +17,8 @@ var hitable = {
     // }
 
     return (distance < this.radius + hitable.radius);
+  },
+  done: function() {
+    return !this.alive;
   }
 }

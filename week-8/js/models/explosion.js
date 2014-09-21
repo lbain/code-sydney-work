@@ -12,5 +12,6 @@ Explosion.prototype.move = function() {
 }
 
 Explosion.prototype.done = function() {
+  debugger
   return this.radius > this.maxR;
 }
