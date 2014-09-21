@@ -3,7 +3,7 @@ function Explosion(x, y) {
   this.y = y;
   this.radius = 20;
   this.dr = 0.5;
-  this.maxR = 100;
+  this.maxR = 50;
   $.extend( this, hitable );
 }
 

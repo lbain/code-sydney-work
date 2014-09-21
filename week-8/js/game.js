@@ -2,17 +2,17 @@ function Game() {
   this.missiles = [];
   this.enemy_missiles = [];
   // for(var i = 0; i < 5; i++){
-    this.missiles.push(new Missile(0, 200, 0, 2));
+    this.missiles.push(new Missile(100, 200, 0, 2));
     // this.missiles.push(new Missile(5, 100, 0, -1));
     // this.enemy_missiles.push(new Missile(5, 100, 0, -1));
   // }
   this.explosions = [new Explosion(300, 300)];
   this.cities = [
-    new City(100, 485),
-    new City(450, 550),
-    new City(600, 515) ];
+    new City(100, 515),
+    new City(450, 575),
+    new City(600, 545) ];
   this.bunkers = [
-    new Bunker(0, 560),
+    new Bunker(30, 560),
     new Bunker(275, 525),
     new Bunker(750, 535) ];
   this.renderer = new Renderer(this);
@@ -53,6 +53,9 @@ Game.prototype.removeFinished = function() {
   this.bunkers = $.grep(this.bunkers, function( bunker, i ) {
     return bunker.alive;
   });
+  this.cities = $.grep(this.cities, function( city, i ) {
+    return city.alive;
+  });
   // this.removeFromList(this.missiles);
   // this.removeFromList(this.enemy_missiles);
   // this.removeFromList(this.explosions);
@@ -75,6 +78,7 @@ Game.prototype.removeHit = function() {
   this.missilesHitEnemyMissiles();
   this.missilesHitMissiles();
   this.missilesHitBunkers();
+  this.missilesHitCities();
 }
 
 Game.prototype.explosionsHitMissiles = function() {
@@ -133,6 +137,20 @@ Game.prototype.missilesHitBunkers = function() {
     self.missiles = $.grep(self.missiles, function( missile, j ) {
       if (bunker.isHit(missile)){
         bunker.alive = false;
+        return false;
+      } else {
+        return true;
+      }
+    });
+  });
+};
+
+Game.prototype.missilesHitCities = function() {
+  var self = this;
+  $.each(self.cities, function(i, city){
+    self.missiles = $.grep(self.missiles, function( missile, j ) {
+      if (city.isHit(missile)){
+        city.alive = false;
         return false;
       } else {
         return true;

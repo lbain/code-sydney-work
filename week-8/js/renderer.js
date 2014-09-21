@@ -59,7 +59,7 @@ Renderer.prototype.missiles = function(){
 
 Renderer.prototype.missile = function(missile){
   var self = this;
-  self.context.drawImage(self.missileImg, missile.x, missile.y);
+  self.context.drawImage(self.missileImg, missile.x - missile.radius, missile.y - missile.radius);
 };
 
 Renderer.prototype.bunkers = function(){
@@ -70,7 +70,7 @@ Renderer.prototype.bunkers = function(){
 };
 
 Renderer.prototype.bunker = function(bunker){
-  this.context.drawImage(this.bunkerImg, bunker.x, bunker.y);
+  this.context.drawImage(this.bunkerImg, bunker.x - bunker.radius, bunker.y - bunker.radius);
 };
 
 Renderer.prototype.cities = function(){
@@ -81,7 +81,7 @@ Renderer.prototype.cities = function(){
 };
 
 Renderer.prototype.city = function(city){
-  this.context.drawImage(this.cityImg, city.x, city.y);
+  this.context.drawImage(this.cityImg, city.x - city.radius, city.y - city.radius);
 };
 
 Renderer.prototype.explosions = function(){
