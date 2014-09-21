@@ -7,6 +7,7 @@ function Missile(source_x, source_y, dx, dy) {
   this.dx = dx;
   this.dy = dy;
   this.alive = true;
+  $.extend( this, hitable );
 }
 
 Missile.prototype.move = function() {
