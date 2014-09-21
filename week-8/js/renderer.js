@@ -20,7 +20,7 @@ Renderer.prototype.setImages = function(){
   this.bunkerImg.src = 'images/bunker.png';
   this.cityImg = new Image();
   this.cityImg.src = 'images/city.png';
-}
+};
 
 Renderer.prototype.draw = function(){
   this.clear();

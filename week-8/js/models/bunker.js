@@ -5,4 +5,4 @@ function Bunker(x, y, missile_count) {
   this.radius = 25;
   this.missile_count = missile_count;
   $.extend( this, hitable );
-}
+};

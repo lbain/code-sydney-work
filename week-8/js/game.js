@@ -1,6 +1,6 @@
 function randomNumber(max) {
   return Math.floor(Math.random() * max);
-}
+};
 
 function Game() {
   this.missilesAvailable = 10;
@@ -20,7 +20,6 @@ function Game() {
   this.renderer = new Renderer(this);
   this.setNextBomb();
 };
-
 
 Game.prototype.step = function(timestamp){
   game.updateLocations();
@@ -62,7 +61,7 @@ Game.prototype.dropBomb = function() {
   var x = randomNumber(800);
   // var speed = (randomNumber(4) + 1) / 2;
   var missile = new Missile(x, -10, 0, 0)
-  missile.setDeltasFromBuilding(this.buildings());
+  missile.setFromBuilding(this.buildings());
   this.enemy_missiles.push(missile);
   this.enemyMissilesAvailable--;
 };
@@ -87,7 +86,7 @@ Game.prototype.setOutOfRange = function() {
       movable.alive = false;
     }
   });
-}
+};
 
 Game.prototype.removeAllFinished = function() {
   this.explosions = this.removeDone(this.explosions);
@@ -108,7 +107,7 @@ Game.prototype.setHit = function() {
   this.missilesHitMissiles();
   this.missilesHitBunkers();
   this.missilesHitCities();
-}
+};
 
 Game.prototype.explosionsHitMissiles = function() {
   var self = this;

@@ -8,4 +8,4 @@ var hitable = {
   done: function() {
     return !this.alive;
   }
-}
+};

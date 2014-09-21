@@ -4,4 +4,4 @@ function City(x, y) {
   this.y = y;
   this.radius = 30;
   $.extend( this, hitable );
-}
+};
