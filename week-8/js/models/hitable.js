@@ -1,3 +1,7 @@
+function randomNumber(max) {
+  return Math.floor(Math.random() * max);
+};
+
 var hitable = {
   isHit: function(hitable) {
     var dx = this.x - hitable.x;

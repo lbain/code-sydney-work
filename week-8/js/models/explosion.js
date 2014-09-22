@@ -7,7 +7,7 @@ function Explosion(x, y) {
   // TUTOR: is there a better way to do this? I was using extend, but it overwrites
   // $.extend( this, hitable );
   for (var attrname in hitable){
-    if(!this[attrname]){
+    if(!this[attrname]){ // look at hasOwnProperty
       this[attrname] = hitable[attrname];
     }
   }

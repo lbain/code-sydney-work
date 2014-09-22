@@ -38,8 +38,17 @@ Missile.prototype.closestBuilding = function(x, buildings) {
 };
 
 Missile.prototype.deltas = function(desintation){
-  var deltaX = desintation.x - this.x
-  var deltaY = desintation.y - this.y
-  this.dx = deltaX / Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2))
-  this.dy = deltaY / Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2))
+  var deltaX = desintation.x - this.x;
+  var deltaY = desintation.y - this.y;
+  this.dx = deltaX / Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+  this.dy = deltaY / Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+  this.randomSpeed();
+};
+
+Missile.prototype.randomSpeed = function() {
+  var multiplier = randomNumber(1) + 1;
+  var normaliser = 2 - Math.abs(Math.abs(this.dx) - Math.abs(this.dy));
+  multiplier *= normaliser;
+  this.dx *= multiplier;
+  this.dy *= multiplier;
 };

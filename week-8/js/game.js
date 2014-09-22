@@ -1,6 +1,4 @@
-function randomNumber(max) {
-  return Math.floor(Math.random() * max);
-};
+
 
 function Game() {
   this.missilesAvailable = 10;
@@ -27,9 +25,24 @@ Game.prototype.step = function(timestamp){
   game.setHit();
   game.removeAllFinished();
   game.renderer.draw(game);
-  game.isGameOver(); // TUTOR: want this to be an if statement
-  window.requestAnimationFrame(game.step);
+  game.nextFrame();
 };
+
+Game.prototype.nextFrame = function() {
+  if(this.isGameRunning()){
+    window.requestAnimationFrame(this.step);
+  } else {
+    console.log(this.endGameMessage());
+  }
+}
+
+Game.prototype.endGameMessage = function() {
+  if(game.isGameWon()){
+    return 'Won';
+  } else {
+    return 'Lost';
+  }
+}
 
 Game.prototype.movables = function(){
   return this.allMisiles().concat(this.explosions);
@@ -44,7 +57,6 @@ Game.prototype.buildings = function(){
 };
 
 Game.prototype.setNextBomb = function() {
-  // TUTOR: why do all the bombs drop at once?
   var self = this;
   var randomTime = randomNumber(3000);
   setTimeout(function() {
@@ -54,7 +66,7 @@ Game.prototype.setNextBomb = function() {
     if(self.enemyMissilesAvailable) {
       self.setNextBomb();
     }
-  }, randomNumber);
+  }, randomTime);
 };
 
 Game.prototype.dropBomb = function() {
@@ -155,13 +167,12 @@ Game.prototype.loopHits = function(list1, list2, callback) {
   });
 };
 
+Game.prototype.isGameRunning = function(){
+  return !this.isGameLost() && !this.isGameWon();
+}
+
 Game.prototype.isGameOver = function(){
-  if (this.isGameLost()){
-    console.log('LOST');
-  } else if(this.isGameWon()) {
-    console.log('WON');
-  }
-  return this.isGameLost() || this.isGameWon();
+  return !this.isGameRunning();
 };
 
 Game.prototype.isGameLost = function(){
@@ -175,7 +186,7 @@ Game.prototype.isGameLost = function(){
 };
 
 Game.prototype.isGameWon = function(){
-  return this.enemy_missiles.length === 0;
+  return this.enemy_missiles.length === 0 && this.enemyMissilesAvailable === 0;
 };
 
 var game = new Game();
