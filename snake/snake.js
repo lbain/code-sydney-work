@@ -12,9 +12,9 @@ function Snake(size) {
 
   this.move = function(delta) {
     var newHead = this.head();
-    if(!delta) {
-      debugger
-    }
+    // if(!delta) {
+    //   debugger
+    // }
     newHead = [newHead[0] + delta[0], newHead[1] + delta[1]];
     locations.unshift(newHead);
     locations.pop();

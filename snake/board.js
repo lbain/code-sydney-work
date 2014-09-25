@@ -16,11 +16,12 @@ function Board(boardLoc, size) {
   this.display = function() {
     $pageBoard.empty();
     for (var i = 0; i < squares.length; i++) {
-      $pageBoard.append('<tr>')
+      var row = '<tr>';
       for(var j = 0; j < squares[i].length; j++) {
-        $pageBoard.append('<td class="square" id="'+ j + '-' + i + '"></td>');
+        row += '<td class="square" id="'+ j + '-' + i + '"></td>';
       }
-      $pageBoard.append('</tr>')
+      row += '</tr>';
+      $pageBoard.append(row)
     }
   };
 
