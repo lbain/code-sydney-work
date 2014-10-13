@@ -5,6 +5,12 @@ html, body, #map-canvas {
   background: #f8fbf4;
 }
 
+body {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
 form {
   width: 200px;
   margin: 30px auto;

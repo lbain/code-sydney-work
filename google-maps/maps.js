@@ -21,13 +21,12 @@ $.fn.serializeObject = function()
 
   function Map() {
     var map;
-    this.init = function(){
+    this.init = function(element){
       var mapOptions = {
         center: { lat: -34.397, lng: 150.644},
         zoom: 8
       };
-      map = new google.maps.Map(document.getElementById('map-canvas'),
-        mapOptions);
+      map = new google.maps.Map(element, mapOptions);
       return(this);
     };
 
@@ -45,14 +44,28 @@ $.fn.serializeObject = function()
       });
       return marker;
     };
-
-    this.init();
   };
 
+  function windowHeight() {
+    return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+  }
+
+  function elementTopOffset($el, additional) {
+    return $el.offset().top + additional;
+  }
+
+  function offsetInPixels($el, additional) {
+    return (windowHeight() - elementTopOffset($el, additional)) + 'px';
+  }
+
   $(function() {
-    map.init();
+    $mapDisplay = $('#map-canvas');
+    $mapDisplay.css('height', offsetInPixels($mapDisplay, 5));
+
+    map.init($mapDisplay[0]);
+
     $('form').submit(function(e) {
-      e.preventDefault()
+      e.preventDefault();
       var input = $(e.target).serializeObject();
       map.createMarker(input.lat, input.lng, input.message);
     });
