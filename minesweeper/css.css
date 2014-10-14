@@ -1,18 +1,19 @@
 body {
   width: 75%;
   margin: auto;
+  text-align: center;
 }
 
-#ms-board {
+#board {
   text-align: center;
   padding: 20px;
 }
 
-.ms-row {
+.row {
   display: block;
 }
 
-.ms-cell {
+.cell {
   display: inline-block;
   border-style: outset;
   border-color: #ccc;
@@ -21,4 +22,32 @@ body {
   padding: 0px;
   height: 20px;
   width: 20px;
+}
+
+.cell.found {
+  background: #DDD;
+}
+
+.near-count-1 {
+  color: #1589FF;
+}
+
+.near-count-2 {
+  color: green;
+}
+
+.near-count-3 {
+  color: red;
+}
+
+.near-count-4 {
+  color: navy;
+}
+
+.near-count-5 {
+  color: #8C001A;
+}
+
+.near-count-6 {
+  color: #C36241;
 }

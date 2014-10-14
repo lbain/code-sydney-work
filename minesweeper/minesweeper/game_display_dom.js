@@ -21,9 +21,13 @@ function DisplayDom(board) {
   $(document).on("displayCell", function(event){
     var displayCell = $('.cell[row=' + event.row + '][col=' + event.col + ']')
 
-    displayCell.text(event.text);
+    displayCell.html(event.text);
     if(event.mark){
       displayCell.addClass('found');
+    }
+    var nearCount = parseInt(event.text);
+    if(nearCount) {
+      displayCell.addClass('near-count-'+nearCount);
     }
   });
 }
@@ -33,7 +37,7 @@ DisplayDom.prototype.showBoard = function() {
     this.$board.append('<div class="row"></div>');
     var $row = this.$board.find('.row:last-child')
     for (var j = 0; j < this.board.gridSize; j++) {
-      $row.append('<div class="cell" row="' + i +'" col="' + j + '"></div>');
+      $row.append('<div class="cell" row="' + i +'" col="' + j + '">&nbsp</div>');
     }
   }
 }

@@ -28,7 +28,7 @@ Cell.prototype.flag = function(flagged){
     type: "displayCell",
     row: this.row,
     col: this.col,
-    text: (this.flagged ? 'F' : ''),
+    text: (this.flagged ? 'F' : '&nbsp'),
     mark: false
   });
 }
@@ -45,7 +45,7 @@ Cell.prototype.show = function() {
   if(this.found){
     return this.displayed();
   } else {
-    return ' ';
+    return '&nbsp';
   }
 }
 
@@ -57,6 +57,6 @@ Cell.prototype.displayed = function() {
   } else if(this.count) {
     return this.count;
   } else {
-    return '-';
+    return '&nbsp';
   }
 }
