@@ -1,2 +1,3 @@
-var board = new Board(4, 2);
-var display = new Display(board);
+var board = new Board(8, 3);
+var display = new DisplayDom(board);
+// var display = new DisplayConsole(board);

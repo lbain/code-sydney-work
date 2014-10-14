@@ -1,13 +1,13 @@
-function Display(board) {
+function DisplayConsole(board) {
   this.board = board;
   while(!board.isFinished()){
     this.showBoard();
-    console.log(this.requestMove());
+    this.requestMove();
   }
   this.showBoard();
 }
 
-Display.prototype.showBoard = function() {
+DisplayConsole.prototype.showBoard = function() {
   this.verticalDivider();
   for (var i = 0; i < board.gridSize; i++) {
     var row = '|';
@@ -21,7 +21,7 @@ Display.prototype.showBoard = function() {
   }
 }
 
-Display.prototype.verticalDivider = function() {
+DisplayConsole.prototype.verticalDivider = function() {
   var row = ''
   for (var i = 0; i < board.gridSize; i++) {
     row += '_';
@@ -29,7 +29,7 @@ Display.prototype.verticalDivider = function() {
   console.log(row);
 }
 
-Display.prototype.requestMove = function() {
+DisplayConsole.prototype.requestMove = function() {
   var row = parseInt(prompt("row : "));
   var col = parseInt(prompt("column : "));
   board.makeMove(row, col);

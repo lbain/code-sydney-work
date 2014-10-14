@@ -7,6 +7,32 @@ function Cell(row, col) {
   this.col = col;
 }
 
+Cell.prototype.display = function(){
+  $.event.trigger({
+    type: "displayCell",
+    row: this.row,
+    col: this.col,
+    text: this.show(),
+    mark: true
+  });
+}
+
+Cell.prototype.find = function(){
+  this.found = true;
+  this.display();
+}
+
+Cell.prototype.flag = function(flagged){
+  this.flagged = flagged;
+  $.event.trigger({
+    type: "displayCell",
+    row: this.row,
+    col: this.col,
+    text: (this.flagged ? 'F' : ''),
+    mark: false
+  });
+}
+
 // Cell.prototype.show = function() {
 //   if(this.found){
 //     return this.displayed() + '-found';

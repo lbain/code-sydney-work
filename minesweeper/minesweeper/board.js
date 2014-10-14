@@ -62,6 +62,17 @@ Board.prototype.loopOverCellNeighbors = function(cell, callback) {
   }
 }
 
+Board.prototype.loopOverDirectCellNeighbors = function(cell, callback) {
+  for(var nearRow = (cell.row - 1); nearRow <= (cell.row + 1); nearRow+=2 ) {
+    for(var nearCol = (cell.col - 1); nearCol <= (cell.col + 1); nearCol+=2 ) {
+      var nearCell = this.cellAtPos(nearRow, nearCol);
+      if(nearCell){
+        callback(nearCell);
+      }
+    }
+  }
+}
+
 Board.prototype.updateCellCounts = function(cell) {
   this.loopOverCellNeighbors(cell, function(nearCell){
     nearCell.count++;
@@ -72,7 +83,7 @@ Board.prototype.revealNearCells = function(cell) {
   var self = this;
   this.loopOverCellNeighbors(cell, function(nearCell){
     if (!nearCell.bomb && !nearCell.found) {
-      nearCell.found = true;
+      nearCell.find();
       if(nearCell.count === 0) {
         self.revealNearCells(nearCell);
       }
@@ -84,10 +95,18 @@ Board.prototype.makeMove = function(row, col) {
   var cell = this.cellAtPos(row, col);
   if(cell.bomb) {
     this.lost = true;
+    cell.find();
   } else if(cell.count > 0) {
-    cell.found = true;
+    cell.find();
   } else {
     this.revealNearCells(cell);
+  }
+}
+
+Board.prototype.flagCell = function(row, col) {
+  var cell = this.cellAtPos(row, col);
+  if(cell){
+    cell.flag(!cell.flagged);
   }
 }
 
@@ -101,4 +120,3 @@ Board.prototype.cellAtPos = function(row, col) {
     return this.grid[row][col];
   }
 }
-
