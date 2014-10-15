@@ -46,13 +46,13 @@ DisplayDom.prototype.showBoard = function() {
 }
 
 DisplayDom.prototype.resultDisplay = function() {
-  var display = '<div class="result">';
+  var display = '<p class="result">';
   if(this.board.isWon()){
     display += 'You won!';
   } else {
     display += 'Sorry, you lost.';
   }
-  display += '</div>';
+  display += '</p>';
   return display;
 }
 
