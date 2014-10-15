@@ -16,38 +16,54 @@ body {
 .cell {
   display: inline-block;
   border-style: outset;
-  border-color: #ccc;
-  background: none;
+  background-image: url('minesweeper_tiles.jpg');
+  background-position: 0px 0px;
   margin: 0px;
   padding: 0px;
-  height: 20px;
-  width: 20px;
+  height: 32px;
+  width: 32px;
 }
 
-.cell.found {
-  background: #DDD;
+.found {
+  background-position: -96px 0px;
 }
 
-.near-count-1 {
-  color: #1589FF;
+.found-F {
+  background-position: -32px 0px;
 }
 
-.near-count-2 {
-  color: green;
+.found-B {
+  background-position: -64px 0px;
 }
 
-.near-count-3 {
-  color: red;
+.found-1 {
+  background-position: 0px -32px;
 }
 
-.near-count-4 {
-  color: navy;
+.found-2 {
+  background-position: -32px -32px;
 }
 
-.near-count-5 {
-  color: #8C001A;
+.found-3 {
+  background-position: -64px -32px;
 }
 
-.near-count-6 {
-  color: #C36241;
+.found-4 {
+  background-position: -96px -32px;
+}
+
+.found-5 {
+  background-position: 0px -64px;
+}
+
+.found-6 {
+  background-position: -32px -64px;
+}
+
+.found-7 {
+  background-position: -64px -64px;
+}
+
+.found-8 {
+  background-position: -96px -64px;
 }

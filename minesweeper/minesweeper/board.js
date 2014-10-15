@@ -62,17 +62,6 @@ Board.prototype.loopOverCellNeighbors = function(cell, callback) {
   }
 }
 
-Board.prototype.loopOverDirectCellNeighbors = function(cell, callback) {
-  for(var nearRow = (cell.row - 1); nearRow <= (cell.row + 1); nearRow+=2 ) {
-    for(var nearCol = (cell.col - 1); nearCol <= (cell.col + 1); nearCol+=2 ) {
-      var nearCell = this.cellAtPos(nearRow, nearCol);
-      if(nearCell){
-        callback(nearCell);
-      }
-    }
-  }
-}
-
 Board.prototype.updateCellCounts = function(cell) {
   this.loopOverCellNeighbors(cell, function(nearCell){
     nearCell.count++;
@@ -89,6 +78,14 @@ Board.prototype.revealNearCells = function(cell) {
       }
     }
   });
+}
+
+Board.prototype.revealAllCells = function() {
+  for (var i = 0; i < this.grid.length; i++) {
+    for (var j = 0; j < this.grid.length; j++) {
+      this.grid[i][j].find();
+    }
+  }
 }
 
 Board.prototype.makeMove = function(row, col) {

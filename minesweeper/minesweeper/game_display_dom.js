@@ -19,15 +19,18 @@ function DisplayDom(board) {
   });
 
   $(document).on("displayCell", function(event){
-    var displayCell = $('.cell[row=' + event.row + '][col=' + event.col + ']')
+    var $displayCell = $('.cell[row=' + event.row + '][col=' + event.col + ']')
 
-    displayCell.html(event.text);
+    // remove previous found- class
+    $displayCell.removeClass (function (index, css) {
+        return (css.match (/(^|\s)found-\S+/g) || []).join(' ');
+    });
+
     if(event.mark){
-      displayCell.addClass('found');
+      $displayCell.addClass('found');
     }
-    var nearCount = parseInt(event.text);
-    if(nearCount) {
-      displayCell.addClass('near-count-'+nearCount);
+    if(event.text != '') {
+      $displayCell.addClass('found-'+event.text);
     }
   });
 }
@@ -42,10 +45,23 @@ DisplayDom.prototype.showBoard = function() {
   }
 }
 
+DisplayDom.prototype.resultDisplay = function() {
+  var display = '<div class="result">';
+  if(this.board.isWon()){
+    display += 'You won!';
+  } else {
+    display += 'Sorry, you lost.';
+  }
+  display += '</div>';
+  return display;
+}
+
 DisplayDom.prototype.checkEndGame = function(event) {
   if(this.board.isFinished()){
     this.$board.off('click');
     this.$board.off('contextmenu');
+    this.$board.after(this.resultDisplay());
+    this.board.revealAllCells();
   }
 }
 
