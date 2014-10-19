@@ -31,7 +31,8 @@ var Validator = {
     return $el.data('validate-as') || $el.attr('type');
   },
   displayErrorMessage: function($el, valid, validateMethod) {
-    $el.closest('.form-input').toggleClass('error', !valid);
+    var $input = $el.closest('.form-input');
+    $input.toggleClass('error', !valid);
   },
   numInvalid: function($submit) {
     var inputs = $submit.closest('form').find('input').not(':input[type=submit]');
