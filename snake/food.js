@@ -11,11 +11,15 @@ function Food(size) {
   };
 
   this.display = function() {
-    Utils.cell(location).text('F');
+    Utils.cell(location).addClass('food');
   };
 
   this.getLocation = function() {
     return location;
+  };
+
+  this.removeDisplay = function() {
+    Utils.cell(location).removeClass('food');
   }
 
   this.init(size);

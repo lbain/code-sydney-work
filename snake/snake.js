@@ -30,13 +30,13 @@ function Snake(size) {
   };
 
   this.remove = function() {
-    $('.snake').text('');
+    $('.snake').removeClass('snake')
   };
 
   this.display = function() {
     this.remove();
     for (var i = 0; i < locations.length; i++) {
-      Utils.cell(locations[i]).text('O').addClass('snake')
+      Utils.cell(locations[i]).addClass('snake')
     }
   };
 

@@ -9,7 +9,7 @@ main {
   overflow:auto;
   padding-bottom: 0px;
   text-align: center;
-  width: 580px;
+  width: 540px;
   margin: 0px auto;
 }
 
@@ -29,16 +29,36 @@ footer a {
   color: #000;
 }
 
+.level-info div {
+  display: inline-block;
+}
+.level-info div:first-of-type {
+  float:left;
+}
+.level-info div:last-of-type {
+  float:right;
+}
+
 .square {
-  border: 1px solid black;
-  min-width: 28px;
-  height: 28px;
+  min-width: 15px;
+  height: 15px;
   vertical-align: middle;
+}
+
+.snake, .food {
+  background-color: white;
+}
+
+.food {
+  background: white;
+  position: relative;
+  border-radius: 10px;
 }
 
 #board {
   text-align: center;
   table-layout: fixed;
+  background-color: black;
 }
 
 h1 {

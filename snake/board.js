@@ -25,10 +25,6 @@ function Board(boardLoc, size) {
     }
   };
 
-  this.clear = function() {
-    $pageBoard.empty()
-  };
-
   this.init(boardLoc, size);
 
 };

@@ -1,10 +1,14 @@
 function Game() {
   var direction = 'r';
-  var size = 18;
+  var size = 32;
   var board;
   var timer;
   var food;
   var snake;
+  var level = 0;
+  var $level = $('#level');
+  var foodTillNextLevel = 1;
+  var $foodTillNextLevel = $('#food-till-next-level');
   var me = this;
 
   this.init = function() {
@@ -13,10 +17,15 @@ function Game() {
     food = new Food(size);
     board.display();
     this.display();
+    this.paceMoves();
+    this.bindKeys();
+  };
+
+  this.paceMoves = function() {
+    clearInterval(timer);
     timer = setInterval(function() {
       me.moveAndDisplay();
-    }, 500);
-    this.bindKeys();
+    }, 50 * (5 - level));
   };
 
   this.bindKeys = function() {
@@ -34,9 +43,15 @@ function Game() {
     });
   };
 
+  this.displayLevelInfo = function() {
+    $foodTillNextLevel.text(foodTillNextLevel);
+    $level.text(level);
+  }
+
   this.display = function() {
     snake.display();
     food.display();
+    this.displayLevelInfo();
   };
 
   this.moveAndDisplay = function() {
@@ -77,26 +92,45 @@ function Game() {
 
   this.checkEndGame = function() {
     if (snake.hitSelf() || this.hitEdge()) {
-      this.endGame();
+      this.endGame(false);
     }
   };
 
-  this.endGame = function() {
+  this.endGame = function(won) {
     clearInterval(timer);
-    this.displayFinal();
+    this.displayFinal(won);
   };
 
-  this.displayFinal = function() {
-    console.log('You lose :(');
+  this.displayFinal = function(won) {
+    $('#board').fadeOut();
+    if (won){
+      $('.level-info').text('You won!');
+    } else {
+      $('.level-info').text('You lost');
+    }
   };
 
   this.hitFood = function() {
     if(snake.hitCell(food.getLocation())) {
       snake.lengthen(this.delta());
+      food.removeDisplay()
       food.generate(size);
+      this.incrementLevel();
       return true;
     }
     return false;
+  };
+
+  this.incrementLevel = function() {
+    foodTillNextLevel -=1;
+    if (foodTillNextLevel === 0) {
+      level += 1;
+      foodTillNextLevel = level;
+      this.paceMoves();
+    }
+    if(this.level === 4){
+      this.endGame(true);
+    }
   };
 
   return this.init();
