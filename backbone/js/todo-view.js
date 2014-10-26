@@ -15,8 +15,9 @@ app.TodoView = Backbone.View.extend({
     'dblclick label' : 'edit',
     'keypress .edit' : 'updateOnEnter',
     'blur .edit' : 'close',
-    'click .toggle': 'toggleCompleted',
-    'click .destroy': 'destroy'
+    'click .toggle' : 'toggleCompleted',
+    'click .destroy' : 'destroy',
+    'drop' : 'drop'
   },
   edit: function(){
     this.$el.addClass('editing');
@@ -39,5 +40,8 @@ app.TodoView = Backbone.View.extend({
   },
   destroy: function() {
     this.model.destroy();
-  }
+  },
+  drop: function(event, index) {
+    this.$el.trigger('update-sort', [this.model, index]);
+  },
 });

@@ -1,4 +1,13 @@
 var app = app || {};
+
+$(document).ready(function() {
+  $('#todo-list').sortable({
+    stop: function(event, ui) {
+      ui.item.trigger('drop', ui.item.index());
+    }
+  });
+});
+
 app.AppView = Backbone.View.extend({
   el: '#todoapp',
   initialize: function () {
@@ -10,6 +19,7 @@ app.AppView = Backbone.View.extend({
   },
   events: {
     'keypress #new-todo': 'createTodoOnEnter',
+    'update-sort': 'updateSort'
   },
   createTodoOnEnter: function(e){
     if ( e.which !== 13 || !this.input.val().trim() ) { // ENTER_KEY = 13
@@ -19,6 +29,7 @@ app.AppView = Backbone.View.extend({
     this.input.val(''); // clean input box
   },
   addOne: function(todo){
+    // var view = new app.Todos().appendModelView(todo);
     var view = new app.TodoView({model: todo});
     var element = view.render().$el;
     element.data("model", todo);
@@ -33,6 +44,33 @@ app.AppView = Backbone.View.extend({
       title: this.input.val().trim(),
       completed: false
     }
+  },
+  render: function() {
+    $('#todo-list').empty();
+    this.addAll();
+    return this;
+  },
+  updateSort: function(event, model, position) {
+    app.todoList.remove(model);
+
+    app.todoList.each(function (model, index) {
+      var ordinal = index;
+      if (index >= position) {
+        ordinal += 1;
+      }
+      model.set('ordinal', ordinal);
+      model.save();
+    });
+
+    model.set('ordinal', position);
+    app.todoList.add(model, {at: position});
+    model.save();
+
+    // to update ordinals on server:
+    var titles = app.todoList.pluck('title');
+    console.log('new order is: ' + titles.join(', '));
+
+    this.render(); // Loads list from local storage
   }
 });
 
