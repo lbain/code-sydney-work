@@ -29,7 +29,13 @@ app.AppView = Backbone.View.extend({
     this.input.val(''); // clean input box
   },
   addOne: function(todo){
-    // var view = new app.Todos().appendModelView(todo);
+    var position;
+    if (todo.get('ordinal') || todo.get('ordinal') == 0) {
+      position = todo.get('ordinal');
+    } else {
+      position = app.todoList.length - 1;
+    }
+    todo.set('ordinal', position);
     var view = new app.TodoView({model: todo});
     var element = view.render().$el;
     element.data("model", todo);
@@ -65,10 +71,6 @@ app.AppView = Backbone.View.extend({
     model.set('ordinal', position);
     app.todoList.add(model, {at: position});
     model.save();
-
-    // to update ordinals on server:
-    var titles = app.todoList.pluck('title');
-    console.log('new order is: ' + titles.join(', '));
 
     this.render(); // Loads list from local storage
   }
